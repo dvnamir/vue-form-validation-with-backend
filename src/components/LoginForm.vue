@@ -34,6 +34,7 @@
               />
               <i class="absolute left-3 top-3 text-gray-400 text-lg uil uil-lock-alt"></i>
             </div>
+            <!--test commit-->
 
             <p class="text-red-500 text-sm mt-1 font-medium">
               <ErrorMessage name="password" />
@@ -69,13 +70,9 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
 import { Form, Field, ErrorMessage } from 'vee-validate'
 
 defineEmits(['switch-to-register'])
-
-const phoneNumber = ref('')
-const password = ref('')
 
 const login = (value) => {
   console.log(value)
