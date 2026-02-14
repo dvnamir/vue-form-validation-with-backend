@@ -2,7 +2,7 @@
   <div dir="rtl" class="min-h-screen bg-gray-50 flex items-center justify-center p-4">
     <div class="w-full max-w-md">
       <div class="bg-white rounded-lg shadow-md p-8 border border-gray-200">
-        <Form @submit="login" class="text-center">
+        <Form @submit="login" class="text-center" :validation-schema="loginFormSchema">
           <h4
             class="text-xl font-bold text-gray-900 mb-6 pb-2 border-b border-gray-300 inline-block"
           >
@@ -13,10 +13,10 @@
             <div class="relative">
               <Field
                 type="text"
-                :rules="phoneNumberRule"
                 class="w-full px-4 py-2.5 text-right bg-white border border-gray-300 rounded-md focus:border-gray-500 focus:outline-none transition-colors"
                 placeholder="شماره تلفن خود را وارد کنید"
                 name="phoneNumber"
+                :validateOnInput="true"
               />
               <i class="absolute left-3 top-3 text-gray-400 text-lg uil uil-at"></i>
             </div>
@@ -27,10 +27,10 @@
             <div class="relative">
               <Field
                 type="text"
-                :rules="passwordRule"
                 class="w-full px-4 py-2.5 text-right bg-white border border-gray-300 rounded-md focus:border-gray-500 focus:outline-none transition-colors"
                 placeholder="پسورد را وارد کنید"
                 name="password"
+                :validateOnInput="true"
               />
               <i class="absolute left-3 top-3 text-gray-400 text-lg uil uil-lock-alt"></i>
             </div>
@@ -70,7 +70,7 @@
 
 <script setup>
 import { Form, Field, ErrorMessage } from 'vee-validate'
-import * as yup from 'yup'
+import { object, string } from 'yup'
 
 defineEmits(['switch-to-register'])
 
@@ -78,18 +78,17 @@ const login = (value) => {
   console.log(value)
 }
 
-const phoneNumberRule = yup
-  .string()
-  .required('شماره تلفن خود را وارد کنید')
-  .matches(/^09[0-9]{9}$/, 'شماره موبایل باید با 09 شروع شود و 11 رقم باشد')
-
-const passwordRule = yup
-  .string()
-  .required('رمز عبور خود را وارد کنید')
-  .matches(
-    /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/,
-    'رمز عبور باید حداقل ۸ کاراکتر، شامل یک حرف بزرگ و یک عدد باشد',
-  )
+const loginFormSchema = object({
+  phoneNumber: string()
+    .required('شماره تلفن خود را وارد کنید')
+    .matches(/^09[0-9]{9}$/, 'شماره موبایل باید با 09 شروع شود و 11 رقم باشد'),
+  password: string()
+    .required('رمز عبور خود را وارد کنید')
+    .matches(
+      /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/,
+      'رمز عبور باید حداقل ۸ کاراکتر، شامل یک حرف بزرگ و یک عدد باشد',
+    ),
+})
 </script>
 
 <style scoped>
