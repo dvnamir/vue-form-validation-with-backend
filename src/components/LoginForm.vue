@@ -13,7 +13,7 @@
             <div class="relative">
               <Field
                 type="text"
-                :rules="validatePhoneNumber"
+                :rules="phoneNumberRule"
                 class="w-full px-4 py-2.5 text-right bg-white border border-gray-300 rounded-md focus:border-gray-500 focus:outline-none transition-colors"
                 placeholder="شماره تلفن خود را وارد کنید"
                 name="phoneNumber"
@@ -27,21 +27,20 @@
             <div class="relative">
               <Field
                 type="text"
-                :rules="validatePassword"
+                :rules="passwordRule"
                 class="w-full px-4 py-2.5 text-right bg-white border border-gray-300 rounded-md focus:border-gray-500 focus:outline-none transition-colors"
                 placeholder="پسورد را وارد کنید"
                 name="password"
               />
               <i class="absolute left-3 top-3 text-gray-400 text-lg uil uil-lock-alt"></i>
             </div>
-            <!--test commit-->
 
             <p class="text-red-500 text-sm mt-1 font-medium">
               <ErrorMessage name="password" />
             </p>
 
             <button
-              class="w-full mt-4 bg-gray-900 text-white py-2.5 rounded-md font-medium hover:bg-gray-800 transition-colors"
+              class="w-full mt-4 bg-gray-900 text-white cursor-pointer py-2.5 rounded-md font-medium hover:bg-gray-800 transition-colors"
             >
               ورود به سایت
             </button>
@@ -71,6 +70,7 @@
 
 <script setup>
 import { Form, Field, ErrorMessage } from 'vee-validate'
+import * as yup from 'yup'
 
 defineEmits(['switch-to-register'])
 
@@ -78,21 +78,18 @@ const login = (value) => {
   console.log(value)
 }
 
-const validatePhoneNumber = (phoneNumber) => {
-  if (!phoneNumber) return 'شماره تلفن خود را وارد کنید'
-  const phoneRegex = /^09[0-9]{9}$/
-  if (!phoneRegex.test(phoneNumber)) return 'شماره تلفن نا معتبر'
+const phoneNumberRule = yup
+  .string()
+  .required('شماره تلفن خود را وارد کنید')
+  .matches(/^09[0-9]{9}$/, 'شماره موبایل باید با 09 شروع شود و 11 رقم باشد')
 
-  return true
-}
-
-const validatePassword = (password) => {
-  if (!password) return 'رمز عبور خود را وارد کنید'
-  const passwordRegex = /^[A-Za-z\d]{6,}$/
-  if (!passwordRegex.test(password)) return 'رمز عبور اشتباه'
-
-  return true
-}
+const passwordRule = yup
+  .string()
+  .required('رمز عبور خود را وارد کنید')
+  .matches(
+    /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/,
+    'رمز عبور باید حداقل ۸ کاراکتر، شامل یک حرف بزرگ و یک عدد باشد',
+  )
 </script>
 
 <style scoped>

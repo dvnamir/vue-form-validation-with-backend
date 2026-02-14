@@ -66,7 +66,7 @@
             </div>
 
             <button
-              class="w-full mt-4 bg-gray-900 text-white py-2.5 rounded-md font-medium hover:bg-gray-800 transition-colors"
+              class="w-full mt-4 bg-gray-900 text-white cursor-pointer py-2.5 rounded-md font-medium hover:bg-gray-800 transition-colors"
             >
               ثبت نام
             </button>
